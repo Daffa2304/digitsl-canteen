@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Riwayat Pesanan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+    .invoice {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .qr {
+      margin-top: 10px;
+    }
+    .invoice h3 {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Riwayat Pesanan Saya</h1>
+  <div id="invoice-container"></div>
+
+  <script>
+    const userId = localStorage.getItem("userId"); // pastikan user login
+
+    fetch(`http://localhost:3000/api/history/${userId}`)
+      .then((res) => res.json())
+      .then((orders) => {
+        const container = document.getElementById("invoice-container");
+
+        const selesaiOrders = orders.filter(order => order.status === "selesai");
+
+        if (selesaiOrders.length === 0) {
+          container.innerHTML = "<p>Belum ada pesanan yang selesai.</p>";
+          return;
+        }
+
+        selesaiOrders.forEach((order) => {
+          const total = order.quantity * order.price;
+          const div = document.createElement("div");
+          div.className = "invoice";
+          div.innerHTML = `
+            <h3>Pesanan #${order.order_id}</h3>
+            <p><strong>Menu:</strong> ${order.menu_name}</p>
+            <p><strong>Jumlah:</strong> ${order.quantity}</p>
+            <p><strong>Harga Satuan:</strong> Rp${order.price}</p>
+            <p><strong>Total:</strong> Rp${total}</p>
+            <p><strong>Tanggal:</strong> ${new Date(order.order_time).toLocaleString()}</p>
+            <div class="qr">
+           <a href="${order.qr_code}" target="_blank">
+             <img src="${order.qr_code}" alt="QR Code" width="120" />
+           </a>
+         </div>
+
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch((err) => {
+        console.error("Gagal mengambil riwayat pesanan:", err);
+      });
+  </script>
+</body>
+</html>
