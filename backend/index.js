@@ -9,9 +9,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session middleware (kalau digunakan login)
 app.use(cors({
-  origin: "https://digitsl-canteen-production.up.railway.app", // sesuaikan dengan domain kamu
+  origin: ["http://localhost:3000", "http://127.0.0.1:5500", "https://digitsl-canteen-production.up.railway.app"],
   credentials: true
 }));
+
 app.set("trust proxy", 1);
 app.use(session({
   secret: "rahasia", 
