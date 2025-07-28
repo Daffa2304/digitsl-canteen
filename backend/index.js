@@ -8,18 +8,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session middleware (kalau digunakan login)
-app.set("trust proxy", 1);
-app.use(
-  session({
-    secret: "secretkey",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      sameSite: "none", 
-      secure: true     
-    }
-  })
-);
+app.set("trust proxy", 1); // WAJIB untuk Railway agar cookie HTTPS bisa jalan
+
+app.use(session({
+  secret: "rahasia", 
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: true,        
+    sameSite: "none",    
+    maxAge: 1000 * 60 * 60 * 24 
+  }
+}));
 
 
 // Import Routes 
