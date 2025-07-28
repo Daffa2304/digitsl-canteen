@@ -8,6 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session middleware (kalau digunakan login)
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: "secretkey",
