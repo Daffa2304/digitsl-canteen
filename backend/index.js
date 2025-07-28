@@ -9,9 +9,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session middleware (kalau digunakan login)
 app.use(session({
-  secret: "kantin-secret",
+  secret: "rahasia-mu",
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === "production", // TRUE di Railway
+    sameSite: "lax"
+  }
 }));
 
 // Import Routes 
