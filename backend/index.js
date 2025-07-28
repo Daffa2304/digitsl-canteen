@@ -8,15 +8,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session middleware (kalau digunakan login)
-app.use(session({
-  secret: "rahasia-mu",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === "production", // TRUE di Railway
-    sameSite: "lax"
-  }
-}));
+const session = require("express-session");
+app.use(
+  session({
+    secret: "secretkey",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      sameSite: "none", 
+      secure: true     
+    }
+  })
+);
+
 
 // Import Routes 
 const authRoutes = require("./routes/authRoutes");
