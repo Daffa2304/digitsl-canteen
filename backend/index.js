@@ -8,8 +8,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session middleware (kalau digunakan login)
-app.set("trust proxy", 1); // WAJIB untuk Railway agar cookie HTTPS bisa jalan
-
+app.use(cors({
+  origin: "https://digitsl-canteen-production.up.railway.app", // sesuaikan dengan domain kamu
+  credentials: true
+}));
+app.set("trust proxy", 1);
 app.use(session({
   secret: "rahasia", 
   resave: false,
