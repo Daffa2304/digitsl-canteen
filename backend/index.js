@@ -8,7 +8,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Session middleware (kalau digunakan login)
-const session = require("express-session");
 app.use(
   session({
     secret: "secretkey",
